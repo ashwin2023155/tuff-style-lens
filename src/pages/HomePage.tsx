@@ -1,10 +1,10 @@
-
 import { useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Upload, Book, Palette, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Logo } from "@/components/Logo";
 
 // Home page feature cards
 const features = [
@@ -45,7 +45,10 @@ const HomePage = () => {
     <AppLayout>
       <div className="space-y-10 animate-fade-in">
         <div className="text-center max-w-2xl mx-auto space-y-4">
-          <h1 className="text-4xl font-bold logo-text">TUFF</h1>
+          <div className="flex flex-col items-center justify-center">
+            <Logo size="lg" className="mb-4" />
+            <h1 className="text-4xl font-bold logo-text">TUFF</h1>
+          </div>
           <p className="text-xl text-muted-foreground">Your AI Fashion Assistant</p>
           <p className="text-muted-foreground">
             Upload your outfits, get personalized style analysis, and discover recommendations
