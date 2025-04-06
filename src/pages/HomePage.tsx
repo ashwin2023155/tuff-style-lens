@@ -1,8 +1,9 @@
+
 import { useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Upload, Book, Palette, ShoppingBag } from "lucide-react";
+import { Upload, Book, Palette, ShoppingBag, Droplet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/Logo";
 
@@ -16,25 +17,32 @@ const features = [
     color: "bg-tuff-pastel-blue/20"
   },
   {
+    icon: Droplet,
+    title: "Color Analysis",
+    description: "Analyze your skin tone and facial features to find your most flattering colors.",
+    path: "/color-analysis",
+    color: "bg-tuff-pastel-pink/20"
+  },
+  {
     icon: Book,
     title: "View Your Lookbook",
     description: "Revisit your outfit history and track your style evolution over time.",
     path: "/lookbook",
-    color: "bg-tuff-pastel-pink/20"
+    color: "bg-tuff-pastel-green/20"
   },
   {
     icon: Palette,
     title: "Get Style Suggestions",
     description: "Receive personalized style recommendations based on your body type and preferences.",
     path: "/style-suggestions",
-    color: "bg-tuff-pastel-green/20"
+    color: "bg-tuff-pastel-yellow/20"
   },
   {
     icon: ShoppingBag,
     title: "Shop Recommended Brands",
     description: "Discover brands and specific pieces that complement your unique style profile.",
     path: "/product-suggestions",
-    color: "bg-tuff-pastel-yellow/20"
+    color: "bg-tuff-pastel-blue/20"
   }
 ];
 

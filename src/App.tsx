@@ -11,6 +11,7 @@ import ResultsPage from "./pages/ResultsPage";
 import StyleSuggestPage from "./pages/StyleSuggestPage";
 import ProductSuggestPage from "./pages/ProductSuggestPage";
 import LookbookPage from "./pages/LookbookPage";
+import ColorAnalysisPage from "./pages/ColorAnalysisPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/style-suggestions" element={<StyleSuggestPage />} />
           <Route path="/product-suggestions" element={<ProductSuggestPage />} />
           <Route path="/lookbook" element={<LookbookPage />} />
+          <Route path="/color-analysis" element={<ColorAnalysisPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

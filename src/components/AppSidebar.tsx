@@ -7,7 +7,8 @@ import {
   Palette, 
   User, 
   Menu,
-  X
+  X,
+  Droplet
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -79,6 +80,7 @@ export const AppSidebar = () => {
           <NavItem to="/" icon={Home} label="Home" end onClick={closeSidebar} />
           <NavItem to="/upload" icon={Upload} label="Upload Outfit" onClick={closeSidebar} />
           <NavItem to="/lookbook" icon={Book} label="Lookbook" onClick={closeSidebar} />
+          <NavItem to="/color-analysis" icon={Droplet} label="Color Analysis" onClick={closeSidebar} />
           <NavItem to="/style-suggestions" icon={Palette} label="Style Suggestions" onClick={closeSidebar} />
           <NavItem to="/product-suggestions" icon={ShoppingBag} label="Brand Suggestions" onClick={closeSidebar} />
         </nav>
