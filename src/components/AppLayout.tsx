@@ -4,6 +4,7 @@ import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ChatBot } from "./ChatBot";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -35,6 +36,7 @@ export const AppLayout = ({
           © TUFF 2025. All rights reserved.
         </footer>
       </main>
+      <ChatBot />
     </div>
   );
 };
