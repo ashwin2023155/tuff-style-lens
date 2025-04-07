@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
@@ -14,6 +13,15 @@ import {
 } from "lucide-react";
 import { OutfitCard } from "@/components/OutfitCard";
 
+// Updated interface for conversation user
+interface ConversationUser {
+  id: string;
+  name: string;
+  avatar: string;
+  online: boolean;
+  isBot?: boolean;
+}
+
 // Mock conversation data
 const mockConversations = {
   "1": {
@@ -22,7 +30,7 @@ const mockConversations = {
       name: "Emma Wilson",
       avatar: "https://i.pravatar.cc/150?img=9",
       online: true
-    },
+    } as ConversationUser,
     messages: [
       {
         id: "m1",
@@ -68,7 +76,7 @@ const mockConversations = {
       avatar: "",
       online: true,
       isBot: true
-    },
+    } as ConversationUser,
     messages: [
       {
         id: "m1",
