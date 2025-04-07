@@ -110,7 +110,6 @@ const HomePage = () => {
                   
                   <Button 
                     size="lg" 
-                    variant="outline" 
                     className="w-full mt-auto group"
                     onClick={() => navigate("/color-analysis")}
                   >
