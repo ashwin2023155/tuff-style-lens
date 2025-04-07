@@ -45,7 +45,7 @@ const HomePage = () => {
           variants={itemVariants}
         >
           <div className="flex flex-col items-center justify-center mb-6">
-            <Logo size="xl" className="mb-4" />
+            <Logo size="lg" className="mb-4" />
             <h1 className="text-5xl font-bold logo-text">TUFF</h1>
           </div>
           <p className="text-2xl font-medium text-foreground/90">Your AI Fashion Assistant</p>
