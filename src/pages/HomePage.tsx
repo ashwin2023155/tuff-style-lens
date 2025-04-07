@@ -2,136 +2,175 @@
 import { useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Upload, Book, Palette, ShoppingBag, Droplet } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
+import { Upload, Palette } from "lucide-react";
+import { motion } from "framer-motion";
 import { Logo } from "@/components/Logo";
-
-// Home page feature cards
-const features = [
-  {
-    icon: Upload,
-    title: "Upload Your Outfit",
-    description: "Take a photo or upload an image of your outfit for instant AI-powered style analysis.",
-    path: "/upload",
-    color: "bg-tuff-pastel-blue/20"
-  },
-  {
-    icon: Droplet,
-    title: "Color Analysis",
-    description: "Analyze your skin tone and facial features to find your most flattering colors.",
-    path: "/color-analysis",
-    color: "bg-tuff-pastel-pink/20"
-  },
-  {
-    icon: Book,
-    title: "View Your Lookbook",
-    description: "Revisit your outfit history and track your style evolution over time.",
-    path: "/lookbook",
-    color: "bg-tuff-pastel-green/20"
-  },
-  {
-    icon: Palette,
-    title: "Get Style Suggestions",
-    description: "Receive personalized style recommendations based on your body type and preferences.",
-    path: "/style-suggestions",
-    color: "bg-tuff-pastel-yellow/20"
-  },
-  {
-    icon: ShoppingBag,
-    title: "Shop Recommended Brands",
-    description: "Discover brands and specific pieces that complement your unique style profile.",
-    path: "/product-suggestions",
-    color: "bg-tuff-pastel-blue/20"
-  }
-];
 
 const HomePage = () => {
   const navigate = useNavigate();
   
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 }
+    }
+  };
+  
   return (
     <AppLayout>
-      <div className="space-y-10 animate-fade-in">
-        <div className="text-center max-w-2xl mx-auto space-y-4">
-          <div className="flex flex-col items-center justify-center">
-            <Logo size="lg" className="mb-4" />
-            <h1 className="text-4xl font-bold logo-text">TUFF</h1>
+      <motion.div 
+        className="max-w-3xl mx-auto space-y-12 py-8"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        {/* Hero Section */}
+        <motion.div 
+          className="text-center space-y-6"
+          variants={itemVariants}
+        >
+          <div className="flex flex-col items-center justify-center mb-6">
+            <Logo size="xl" className="mb-4" />
+            <h1 className="text-5xl font-bold logo-text">TUFF</h1>
           </div>
-          <p className="text-xl text-muted-foreground">Your AI Fashion Assistant</p>
-          <p className="text-muted-foreground">
-            Upload your outfits, get personalized style analysis, and discover recommendations
-            that enhance your unique fashion sense.
+          <p className="text-2xl font-medium text-foreground/90">Your AI Fashion Assistant</p>
+          <p className="text-muted-foreground text-lg max-w-lg mx-auto">
+            Elevate your style with AI-powered analysis and personalized recommendations
           </p>
-          <Button 
-            size="lg" 
-            className="mt-4"
-            onClick={() => navigate("/upload")}
-          >
-            <Upload className="mr-2 h-4 w-4" />
-            Upload Your First Outfit
-          </Button>
-        </div>
+        </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {features.map((feature, index) => (
-            <Card key={index} className="overflow-hidden">
-              <CardHeader className={cn("flex flex-row items-center gap-4", feature.color)}>
-                <div className="bg-white dark:bg-card p-2 rounded-lg">
-                  <feature.icon className="h-8 w-8 text-primary" />
+        {/* Main Features */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          variants={itemVariants}
+        >
+          {/* Outfit Analyzer Card */}
+          <motion.div 
+            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            className="h-full"
+          >
+            <Card className="overflow-hidden h-full shadow-lg hover:shadow-xl transition-shadow border-2 border-primary/5 bg-gradient-to-br from-background to-accent/5">
+              <CardContent className="p-0">
+                <div className="p-8 flex flex-col h-full">
+                  <div className="mb-6 bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center">
+                    <Upload className="h-8 w-8 text-primary" />
+                  </div>
+                  
+                  <h2 className="text-2xl font-bold mb-3">Outfit Analyzer</h2>
+                  
+                  <p className="text-muted-foreground mb-6 flex-grow">
+                    Upload your outfit for instant AI analysis. Get personalized style feedback, color matching, and improvement suggestions.
+                  </p>
+                  
+                  <Button 
+                    size="lg" 
+                    className="w-full mt-auto group"
+                    onClick={() => navigate("/upload")}
+                  >
+                    Analyze My Outfit
+                    <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+                  </Button>
                 </div>
-                <div>
-                  <CardTitle>{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-4">
-                <Button 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => navigate(feature.path)}
-                >
-                  Try Now
-                </Button>
               </CardContent>
             </Card>
-          ))}
-        </div>
+          </motion.div>
+          
+          {/* Color Analysis Card */}
+          <motion.div 
+            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            className="h-full"
+          >
+            <Card className="overflow-hidden h-full shadow-lg hover:shadow-xl transition-shadow border-2 border-primary/5 bg-gradient-to-br from-background to-accent/5">
+              <CardContent className="p-0">
+                <div className="p-8 flex flex-col h-full">
+                  <div className="mb-6 bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center">
+                    <Palette className="h-8 w-8 text-primary" />
+                  </div>
+                  
+                  <h2 className="text-2xl font-bold mb-3">Color Analysis</h2>
+                  
+                  <p className="text-muted-foreground mb-6 flex-grow">
+                    Discover your perfect color palette based on your skin tone. Find your seasonal color type and most flattering shades.
+                  </p>
+                  
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="w-full mt-auto group"
+                    onClick={() => navigate("/color-analysis")}
+                  >
+                    Find My Colors
+                    <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.div>
         
-        <div className="bg-muted/50 rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">How TUFF Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            <div className="space-y-2">
-              <div className="bg-primary/10 w-10 h-10 rounded-full flex items-center justify-center mx-auto">
+        {/* How It Works Section */}
+        <motion.div 
+          className="bg-muted/30 rounded-2xl p-8 text-center"
+          variants={itemVariants}
+        >
+          <h2 className="text-2xl font-bold mb-6">How TUFF Works</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
+            <div className="space-y-3">
+              <motion.div 
+                className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto"
+                whileHover={{ scale: 1.1 }}
+              >
                 <span className="text-primary font-bold">1</span>
-              </div>
+              </motion.div>
               <h3 className="font-medium">Upload</h3>
               <p className="text-sm text-muted-foreground">
-                Upload a photo of your outfit or style you like
+                Upload a photo of your outfit or take a selfie
               </p>
             </div>
             
-            <div className="space-y-2">
-              <div className="bg-primary/10 w-10 h-10 rounded-full flex items-center justify-center mx-auto">
+            <div className="space-y-3">
+              <motion.div 
+                className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto"
+                whileHover={{ scale: 1.1 }}
+              >
                 <span className="text-primary font-bold">2</span>
-              </div>
+              </motion.div>
               <h3 className="font-medium">Analyze</h3>
               <p className="text-sm text-muted-foreground">
                 Our AI analyzes colors, fit, and style elements
               </p>
             </div>
             
-            <div className="space-y-2">
-              <div className="bg-primary/10 w-10 h-10 rounded-full flex items-center justify-center mx-auto">
+            <div className="space-y-3">
+              <motion.div 
+                className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto"
+                whileHover={{ scale: 1.1 }}
+              >
                 <span className="text-primary font-bold">3</span>
-              </div>
+              </motion.div>
               <h3 className="font-medium">Discover</h3>
               <p className="text-sm text-muted-foreground">
-                Get personalized recommendations and style insights
+                Get personalized recommendations and insights
               </p>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </AppLayout>
   );
 };
