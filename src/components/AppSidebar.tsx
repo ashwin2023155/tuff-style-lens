@@ -5,10 +5,12 @@ import {
   Book, 
   ShoppingBag, 
   Palette, 
-  User, 
+  User,
   Menu,
   X,
-  Droplet
+  Droplet,
+  MessageSquare,
+  Grid
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -77,8 +79,10 @@ export const AppSidebar = () => {
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          <NavItem to="/" icon={Home} label="Home" end onClick={closeSidebar} />
+          <NavItem to="/" icon={Grid} label="Feed" end onClick={closeSidebar} />
+          <NavItem to="/home" icon={Home} label="Home" onClick={closeSidebar} />
           <NavItem to="/upload" icon={Upload} label="Upload Outfit" onClick={closeSidebar} />
+          <NavItem to="/messages" icon={MessageSquare} label="Messages" onClick={closeSidebar} />
           <NavItem to="/lookbook" icon={Book} label="Lookbook" onClick={closeSidebar} />
           <NavItem to="/color-analysis" icon={Droplet} label="Color Analysis" onClick={closeSidebar} />
           <NavItem to="/style-suggestions" icon={Palette} label="Style Suggestions" onClick={closeSidebar} />
@@ -86,12 +90,12 @@ export const AppSidebar = () => {
         </nav>
 
         <div className="p-4 border-t border-sidebar-border flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <NavLink to="/profile/user1" className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="rounded-full bg-primary/10">
               <User className="h-4 w-4 text-primary" />
             </Button>
             <span className="text-sm font-medium">John Doe</span>
-          </div>
+          </NavLink>
           <ThemeToggle />
         </div>
       </aside>
