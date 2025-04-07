@@ -2,107 +2,91 @@
 import { useState, useRef } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { ColorCircle } from "@/components/ColorCircle";
-import { Palette, Upload, Image as ImageIcon, Eye, Droplet } from "lucide-react";
+import { Palette, Upload, Image as ImageIcon, Eye, Droplet, SlidersHorizontal, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { SkintoneMatch } from "@/components/SkintoneMatch";
+import { StyleLabel } from "@/components/StyleLabel";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
 
-// Mock skin tone palette data - this would ideally come from a more sophisticated analysis
-const skinTonePalettes = [
-  {
-    id: "fair-cool",
-    name: "Fair Cool",
-    primaryColor: "#F5D7D1",
-    complementaryColors: [
-      { color: "#1E3E5B", name: "Navy Blue" },
-      { color: "#6F4E7C", name: "Purple" },
-      { color: "#96616B", name: "Mauve" },
-      { color: "#626D71", name: "Slate Gray" },
-    ]
+// Seasonal color palettes based on skin tone analysis
+const seasonalPalettes = {
+  "Spring": {
+    primary: "#F4DFCF",
+    colors: [
+      { color: "#FFDAB9", name: "Peach" },
+      { color: "#FFE4B5", name: "Moccasin" },
+      { color: "#FA8072", name: "Salmon" },
+      { color: "#F4A460", name: "Sandy Brown" },
+    ],
+    description: "Warm and bright colors that enhance your golden undertone."
   },
-  {
-    id: "fair-warm",
-    name: "Fair Warm",
-    primaryColor: "#F4DFCF",
-    complementaryColors: [
-      { color: "#5B7D5B", name: "Olive Green" },
-      { color: "#AA6F2B", name: "Bronze" },
-      { color: "#BB8A52", name: "Camel" },
-      { color: "#9B4B4B", name: "Terracotta" },
-    ]
+  "Summer": {
+    primary: "#F5D7D1",
+    colors: [
+      { color: "#C0C0FF", name: "Periwinkle" },
+      { color: "#DDA0DD", name: "Plum" },
+      { color: "#B0E0E6", name: "Powder Blue" },
+      { color: "#FFC0CB", name: "Pink" },
+    ],
+    description: "Soft, cool colors that complement your delicate undertone."
   },
-  {
-    id: "medium-cool",
-    name: "Medium Cool",
-    primaryColor: "#DAB394",
-    complementaryColors: [
-      { color: "#4D668B", name: "Steel Blue" },
-      { color: "#6B8E23", name: "Forest Green" },
-      { color: "#AA7B82", name: "Rose" },
-      { color: "#363636", name: "Charcoal" },
-    ]
+  "Autumn": {
+    primary: "#C68642",
+    colors: [
+      { color: "#8B4513", name: "Saddle Brown" },
+      { color: "#A0522D", name: "Sienna" },
+      { color: "#D2691E", name: "Chocolate" },
+      { color: "#556B2F", name: "Olive" },
+    ],
+    description: "Rich, warm earthy tones that enhance your natural depth."
   },
-  {
-    id: "medium-warm",
-    name: "Medium Warm", 
-    primaryColor: "#C68642",
-    complementaryColors: [
-      { color: "#006666", name: "Teal" },
-      { color: "#8A4117", name: "Burnt Sienna" },
-      { color: "#DAA520", name: "Goldenrod" },
-      { color: "#800020", name: "Burgundy" },
-    ]
-  },
-  {
-    id: "deep-cool",
-    name: "Deep Cool",
-    primaryColor: "#8D5524",
-    complementaryColors: [
-      { color: "#E86100", name: "Bright Orange" },
-      { color: "#01796F", name: "Turquoise" },
-      { color: "#FFFF00", name: "Yellow" },
-      { color: "#C2B280", name: "Sand" },
-    ]
-  },
-  {
-    id: "deep-warm",
-    name: "Deep Warm",
-    primaryColor: "#6A4C35",
-    complementaryColors: [
-      { color: "#FF8C00", name: "Orange" },
-      { color: "#FFD700", name: "Gold" },
-      { color: "#228B22", name: "Forest Green" },
-      { color: "#CD7F32", name: "Bronze" },
-    ]
-  },
-  {
-    id: "deep-neutral",
-    name: "Deep Neutral",
-    primaryColor: "#3C2218",
-    complementaryColors: [
-      { color: "#FFFFFF", name: "White" },
-      { color: "#C0C0C0", name: "Silver" },
-      { color: "#FFD700", name: "Gold" },
-      { color: "#FF0000", name: "Red" },
-    ]
+  "Winter": {
+    primary: "#8D5524",
+    colors: [
+      { color: "#00008B", name: "Dark Blue" },
+      { color: "#4682B4", name: "Steel Blue" },
+      { color: "#008B8B", name: "Teal" },
+      { color: "#B0C4DE", name: "Light Steel Blue" },
+    ],
+    description: "Bold, cool colors that create striking contrast with your skin."
   }
-];
+};
+
+// Undertone classification
+const undertones = ["Warm", "Cool", "Neutral"];
+
+// Brightness and contrast levels
+const brightnessLevels = ["Light", "Medium", "Deep"];
+const contrastLevels = ["Low", "Medium", "High"];
 
 const ColorAnalysisPage = () => {
   const [image, setImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [activeTab, setActiveTab] = useState("upload");
   const [analysisResult, setAnalysisResult] = useState<{
-    skintone: (typeof skinTonePalettes)[0] | null;
-    eyeShape: string | null;
-    jawline: string | null;
+    skintone: {
+      name: string;
+      color: string;
+      undertone: string;
+      season: string;
+      brightness: string;
+      contrast: string;
+    } | null;
+    complementaryColors: Array<{ color: string; name: string }>;
+    description: string;
   }>({
     skintone: null,
-    eyeShape: null,
-    jawline: null
+    complementaryColors: [],
+    description: ""
   });
   
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -129,6 +113,62 @@ const ColorAnalysisPage = () => {
     fileInputRef.current?.click();
   };
 
+  const analyzeSkintone = (imageData: string) => {
+    // In a real application, we would send the image to a backend server
+    // for processing with MediaPipe and color analysis algorithms.
+    // For demo purposes, we'll simulate analysis with a random selection.
+    
+    // 1. Randomly select a season (in a real app, this would be algorithmically determined)
+    const seasons = Object.keys(seasonalPalettes);
+    const randomSeason = seasons[Math.floor(Math.random() * seasons.length)] as keyof typeof seasonalPalettes;
+    
+    // 2. Get associated palette
+    const palette = seasonalPalettes[randomSeason];
+    
+    // 3. For the selected season, determine undertone (in real app, would be based on HSV analysis)
+    let undertone = "Neutral";
+    if (randomSeason === "Spring" || randomSeason === "Autumn") {
+      undertone = "Warm";
+    } else if (randomSeason === "Summer" || randomSeason === "Winter") {
+      undertone = "Cool";
+    }
+    
+    // 4. Determine brightness and contrast based on season
+    let brightness = "Medium";
+    let contrast = "Medium";
+    
+    if (randomSeason === "Spring") {
+      brightness = "Light";
+      contrast = "Low";
+    } else if (randomSeason === "Summer") {
+      brightness = "Light";
+      contrast = "Low";
+    } else if (randomSeason === "Autumn") {
+      brightness = "Deep";
+      contrast = "High";
+    } else if (randomSeason === "Winter") {
+      brightness = "Deep";
+      contrast = "High";
+    }
+    
+    // 5. Create a skintone name based on the analysis
+    const depthPrefix = brightness === "Light" ? "Fair" : brightness === "Deep" ? "Deep" : "Medium";
+    const skintoneName = `${depthPrefix} ${undertone}`;
+    
+    return {
+      skintone: {
+        name: skintoneName,
+        color: palette.primary,
+        undertone,
+        season: randomSeason,
+        brightness,
+        contrast
+      },
+      complementaryColors: palette.colors,
+      description: palette.description
+    };
+  };
+
   const handleAnalyze = () => {
     if (!image) {
       toast.error("Please upload an image first");
@@ -137,23 +177,14 @@ const ColorAnalysisPage = () => {
     
     setIsAnalyzing(true);
     
-    // Simulate analysis delay - in a real app, this would be a call to a backend service
+    // Simulate analysis delay - in a real app, this would call a backend API
     setTimeout(() => {
-      // Mock analysis result - randomly select a skin tone palette
-      const randomPalette = skinTonePalettes[Math.floor(Math.random() * skinTonePalettes.length)];
-      
-      // Mock eye shape and jawline detection
-      const eyeShapes = ["Almond", "Round", "Monolid", "Hooded", "Downturned"];
-      const jawlines = ["Angular", "Square", "Round", "Heart", "Oval"];
-      
-      setAnalysisResult({
-        skintone: randomPalette,
-        eyeShape: eyeShapes[Math.floor(Math.random() * eyeShapes.length)],
-        jawline: jawlines[Math.floor(Math.random() * jawlines.length)]
-      });
+      const result = analyzeSkintone(image);
+      setAnalysisResult(result);
       
       setIsAnalyzing(false);
       setActiveTab("results");
+      toast.success("Analysis complete!");
     }, 2000);
   };
 
@@ -164,10 +195,10 @@ const ColorAnalysisPage = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Palette className="h-5 w-5 text-primary" />
-              Skin Tone & Facial Analysis
+              Skin Tone & Seasonal Color Analysis
             </CardTitle>
             <CardDescription>
-              Upload a clear selfie to analyze your skin tone, eye shape, and facial features
+              Upload a clear selfie to analyze your skin tone, undertone, and seasonal color type
               for personalized fashion color recommendations.
             </CardDescription>
           </CardHeader>
@@ -196,7 +227,7 @@ const ColorAnalysisPage = () => {
                 />
                 
                 <div 
-                  className="image-upload-container aspect-square flex flex-col items-center justify-center"
+                  className="image-upload-container aspect-square flex flex-col items-center justify-center border-2 border-dashed border-muted-foreground/30 rounded-lg cursor-pointer hover:bg-muted/50 transition-colors p-6"
                   onClick={handleUploadClick}
                 >
                   <ImageIcon className="h-12 w-12 text-muted-foreground mb-4" />
@@ -235,7 +266,7 @@ const ColorAnalysisPage = () => {
                 <CardHeader>
                   <CardTitle>Ready to Analyze</CardTitle>
                   <CardDescription>
-                    Our AI will analyze your facial features to provide personalized recommendations
+                    We'll analyze your facial features to provide personalized color recommendations
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -246,12 +277,22 @@ const ColorAnalysisPage = () => {
                         <Droplet className="h-3 w-3" /> Skin Tone
                       </Badge>
                       <Badge variant="outline" className="flex gap-1 items-center">
-                        <Eye className="h-3 w-3" /> Eye Shape
+                        <SlidersHorizontal className="h-3 w-3" /> Undertone
                       </Badge>
                       <Badge variant="outline" className="flex gap-1 items-center">
-                        <Palette className="h-3 w-3" /> Color Palette
+                        <Palette className="h-3 w-3" /> Seasonal Type
                       </Badge>
                     </div>
+                  </div>
+                  
+                  <div className="space-y-2 text-sm">
+                    <p className="font-medium">How it works:</p>
+                    <ol className="list-decimal list-inside space-y-1 text-muted-foreground pl-2">
+                      <li>We extract your skin color from the image</li>
+                      <li>We analyze your undertone (warm, cool, neutral)</li>
+                      <li>We determine your seasonal color type</li>
+                      <li>We recommend complementary colors for your wardrobe</li>
+                    </ol>
                   </div>
                   
                   <Button 
@@ -271,42 +312,35 @@ const ColorAnalysisPage = () => {
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Your Skin Tone Analysis</CardTitle>
+                    <CardTitle>Your Color Analysis Results</CardTitle>
+                    <CardDescription>
+                      Based on your skin tone, we've determined your personal color profile
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-col items-center">
                       <SkintoneMatch 
                         name={analysisResult.skintone.name}
-                        color={analysisResult.skintone.primaryColor}
+                        color={analysisResult.skintone.color}
+                        undertone={analysisResult.skintone.undertone}
+                        season={analysisResult.skintone.season}
+                        brightness={analysisResult.skintone.brightness}
+                        contrast={analysisResult.skintone.contrast}
                       />
-                      
-                      <div className="mt-6 text-center">
-                        <h3 className="text-lg font-medium mb-2">Facial Features</h3>
-                        <div className="flex justify-center gap-6">
-                          <div className="space-y-1 text-center">
-                            <p className="text-sm text-muted-foreground">Eye Shape</p>
-                            <Badge variant="outline">{analysisResult.eyeShape}</Badge>
-                          </div>
-                          <div className="space-y-1 text-center">
-                            <p className="text-sm text-muted-foreground">Jawline</p>
-                            <Badge variant="outline">{analysisResult.jawline}</Badge>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
                 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Your Complementary Colors</CardTitle>
+                    <CardTitle>Your Seasonal Color Palette</CardTitle>
                     <CardDescription>
-                      These colors will complement your skin tone in outfits
+                      {analysisResult.description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex justify-center gap-6 py-4">
-                      {analysisResult.skintone.complementaryColors.map((color, index) => (
+                      {analysisResult.complementaryColors.map((color, index) => (
                         <ColorCircle 
                           key={index} 
                           color={color.color} 
@@ -316,12 +350,22 @@ const ColorAnalysisPage = () => {
                       ))}
                     </div>
                   </CardContent>
+                  <CardFooter className="flex flex-col space-y-3">
+                    <div className="bg-muted/30 p-3 rounded-md w-full">
+                      <div className="flex items-start gap-2">
+                        <Info className="h-5 w-5 text-primary mt-0.5" />
+                        <div>
+                          <h4 className="text-sm font-medium">Color Harmony Tips</h4>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            These colors will create natural harmony with your skin tone. Use them for clothing, accessories, and makeup to enhance your natural features.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardFooter>
                 </Card>
                 
                 <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Use these color recommendations when choosing your outfits for a more harmonious look
-                  </p>
                   <Button onClick={() => setActiveTab("upload")}>
                     Analyze Another Photo
                   </Button>
