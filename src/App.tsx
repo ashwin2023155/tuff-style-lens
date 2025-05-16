@@ -16,6 +16,10 @@ import StyleSuggestPage from "./pages/StyleSuggestPage";
 import ProductSuggestPage from "./pages/ProductSuggestPage";
 import LookbookPage from "./pages/LookbookPage";
 import ColorAnalysisPage from "./pages/ColorAnalysisPage";
+import VirtualTryOnPage from "./pages/VirtualTryOnPage";
+import FashionEducationPage from "./pages/FashionEducationPage";
+import TrendsPage from "./pages/TrendsPage";
+import SQCalculatorPage from "./pages/SQCalculatorPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +43,10 @@ const App = () => (
           <Route path="/product-suggestions" element={<ProductSuggestPage />} />
           <Route path="/lookbook" element={<LookbookPage />} />
           <Route path="/color-analysis" element={<ColorAnalysisPage />} />
+          <Route path="/virtual-try-on" element={<VirtualTryOnPage />} />
+          <Route path="/fashion-education" element={<FashionEducationPage />} />
+          <Route path="/trends" element={<TrendsPage />} />
+          <Route path="/sq-calculator" element={<SQCalculatorPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
