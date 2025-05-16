@@ -10,7 +10,9 @@ import {
   X,
   Droplet,
   MessageSquare,
-  Grid
+  Grid,
+  TrendingUp,
+  Award
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -87,6 +89,9 @@ export const AppSidebar = () => {
           <NavItem to="/color-analysis" icon={Droplet} label="Color Analysis" onClick={closeSidebar} />
           <NavItem to="/style-suggestions" icon={Palette} label="Style Suggestions" onClick={closeSidebar} />
           <NavItem to="/product-suggestions" icon={ShoppingBag} label="Brand Suggestions" onClick={closeSidebar} />
+          <NavItem to="/fashion-education" icon={Book} label="Fashion Education" onClick={closeSidebar} />
+          <NavItem to="/trends" icon={TrendingUp} label="Fashion Trends" onClick={closeSidebar} />
+          <NavItem to="/sq-calculator" icon={Award} label="Style Quotient" onClick={closeSidebar} />
         </nav>
 
         <div className="p-4 border-t border-sidebar-border flex items-center justify-between">

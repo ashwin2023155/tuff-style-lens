@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Upload, Palette, Eye, TrendingUp, Award, BookOpenCheck } from "lucide-react";
+import { Upload, Palette, Eye } from "lucide-react";
 import { motion } from "framer-motion";
 import { Logo } from "@/components/Logo";
 
@@ -145,99 +145,6 @@ const HomePage = () => {
                     onClick={() => navigate("/virtual-try-on")}
                   >
                     Try Clothes On
-                    <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-          
-          {/* Fashion Education Card */}
-          <motion.div 
-            whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            className="h-full"
-          >
-            <Card className="overflow-hidden h-full shadow-lg hover:shadow-xl transition-shadow border-2 border-primary/5 bg-gradient-to-br from-background to-accent/5">
-              <CardContent className="p-0">
-                <div className="p-8 flex flex-col h-full">
-                  <div className="mb-6 bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center">
-                    <BookOpenCheck className="h-8 w-8 text-primary" />
-                  </div>
-                  
-                  <h2 className="text-2xl font-bold mb-3">Fashion Education</h2>
-                  
-                  <p className="text-muted-foreground mb-6 flex-grow">
-                    Swipe through outfits to discover your style preferences and learn fashion basics through interactive content.
-                  </p>
-                  
-                  <Button 
-                    size="lg" 
-                    className="w-full mt-auto group"
-                    onClick={() => navigate("/fashion-education")}
-                  >
-                    Discover My Style
-                    <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-          
-          {/* Trends Card */}
-          <motion.div 
-            whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            className="h-full"
-          >
-            <Card className="overflow-hidden h-full shadow-lg hover:shadow-xl transition-shadow border-2 border-primary/5 bg-gradient-to-br from-background to-accent/5">
-              <CardContent className="p-0">
-                <div className="p-8 flex flex-col h-full">
-                  <div className="mb-6 bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center">
-                    <TrendingUp className="h-8 w-8 text-primary" />
-                  </div>
-                  
-                  <h2 className="text-2xl font-bold mb-3">Fashion Trends</h2>
-                  
-                  <p className="text-muted-foreground mb-6 flex-grow">
-                    Stay updated with the latest fashion trends. Browse popular styles, colors, and patterns relevant to your preferences.
-                  </p>
-                  
-                  <Button 
-                    size="lg" 
-                    className="w-full mt-auto group"
-                    onClick={() => navigate("/trends")}
-                  >
-                    Explore Trends
-                    <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-          
-          {/* SQ Calculator Card */}
-          <motion.div 
-            whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            className="h-full"
-          >
-            <Card className="overflow-hidden h-full shadow-lg hover:shadow-xl transition-shadow border-2 border-primary/5 bg-gradient-to-br from-background to-accent/5">
-              <CardContent className="p-0">
-                <div className="p-8 flex flex-col h-full">
-                  <div className="mb-6 bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center">
-                    <Award className="h-8 w-8 text-primary" />
-                  </div>
-                  
-                  <h2 className="text-2xl font-bold mb-3">Style Quotient</h2>
-                  
-                  <p className="text-muted-foreground mb-6 flex-grow">
-                    Discover your Style Quotient (SQ) score. Learn how well your outfits match your body type, colors, and current trends.
-                  </p>
-                  
-                  <Button 
-                    size="lg" 
-                    className="w-full mt-auto group"
-                    onClick={() => navigate("/sq-calculator")}
-                  >
-                    Calculate My SQ
                     <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
                   </Button>
                 </div>
