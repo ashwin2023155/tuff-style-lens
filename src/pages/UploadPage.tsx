@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, Image } from "lucide-react";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 const UploadPage = () => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const UploadPage = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useIsMobile();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,10 +61,16 @@ const UploadPage = () => {
 
   return (
     <AppLayout title="Upload Your Outfit" hideSearch>
-      <div className="max-w-2xl mx-auto pt-6">
+      <div className={cn(
+        "mx-auto pt-6",
+        isMobile ? "max-w-full px-2" : "max-w-2xl"
+      )}>
         <Card className="overflow-hidden">
-          <CardContent className="p-6 space-y-6">
-            <p className="text-center text-muted-foreground">
+          <CardContent className={cn(
+            "space-y-6",
+            isMobile ? "p-4" : "p-6"
+          )}>
+            <p className="text-center text-muted-foreground text-sm md:text-base">
               Upload a clear image showing your full outfit for AI analysis
             </p>
             
@@ -78,7 +87,10 @@ const UploadPage = () => {
                 <img
                   src={image}
                   alt="Outfit preview"
-                  className="w-full aspect-square object-cover"
+                  className={cn(
+                    "w-full object-cover",
+                    isMobile ? "aspect-[3/4] max-h-96" : "aspect-square"
+                  )}
                 />
                 <Button
                   variant="ghost"
@@ -91,22 +103,36 @@ const UploadPage = () => {
               </div>
             ) : (
               <div 
-                className="image-upload-container aspect-square flex flex-col items-center justify-center"
+                className={cn(
+                  "image-upload-container flex flex-col items-center justify-center cursor-pointer",
+                  isMobile ? "aspect-[3/4] py-8" : "aspect-square"
+                )}
                 onClick={handleUploadClick}
               >
-                <Image className="h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-lg font-medium">Drag and drop or click to upload</p>
-                <p className="text-sm text-muted-foreground">
+                <Image className={cn(
+                  "text-muted-foreground mb-4",
+                  isMobile ? "h-8 w-8" : "h-12 w-12"
+                )} />
+                <p className={cn(
+                  "font-medium text-center",
+                  isMobile ? "text-base" : "text-lg"
+                )}>
+                  {isMobile ? "Tap to upload" : "Drag and drop or click to upload"}
+                </p>
+                <p className="text-sm text-muted-foreground text-center mt-1">
                   Support for JPG, PNG, WEBP
                 </p>
                 {isUploading && (
-                  <div className="mt-4 text-primary">Uploading...</div>
+                  <div className="mt-4 text-primary text-sm">Uploading...</div>
                 )}
               </div>
             )}
             
             <Button 
-              className="w-full h-12 text-base"
+              className={cn(
+                "w-full text-base",
+                isMobile ? "h-12" : "h-12"
+              )}
               onClick={handleAnalyze}
               disabled={!image || isAnalyzing}
             >

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 import Groq from "groq-sdk";
 
 interface Message {
@@ -32,6 +33,7 @@ export const ChatBot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -120,10 +122,20 @@ export const ChatBot = () => {
   }, [messages]);
 
   return (
-    <div className="fixed bottom-5 right-5 z-50">
+    <div className={cn(
+      "fixed z-50",
+      isMobile 
+        ? "inset-x-4 bottom-4 top-20" 
+        : "bottom-5 right-5"
+    )}>
       {isOpen ? (
-        <Card className="w-80 md:w-96 shadow-lg">
-          <CardHeader className="bg-primary/10 p-3 flex flex-row items-center justify-between">
+        <Card className={cn(
+          "shadow-lg",
+          isMobile 
+            ? "w-full h-full flex flex-col" 
+            : "w-80 md:w-96"
+        )}>
+          <CardHeader className="bg-primary/10 p-3 flex flex-row items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2">
               <Bot className="h-5 w-5 text-primary" />
               <h3 className="font-semibold">TUFF Assistant</h3>
@@ -132,7 +144,10 @@ export const ChatBot = () => {
               <X className="h-4 w-4" />
             </Button>
           </CardHeader>
-          <CardContent className="p-3 h-80 overflow-y-auto">
+          <CardContent className={cn(
+            "p-3 overflow-y-auto flex-1",
+            isMobile ? "h-full" : "h-80"
+          )}>
             <div className="space-y-4">
               {messages.map((message, index) => (
                 <div
@@ -144,13 +159,14 @@ export const ChatBot = () => {
                 >
                   <div
                     className={cn(
-                      "max-w-[80%] rounded-lg p-3",
+                      "max-w-[85%] rounded-lg p-3",
+                      isMobile && "max-w-[90%]",
                       message.role === "user"
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted"
                     )}
                   >
-                    <p className="text-sm">{message.content}</p>
+                    <p className="text-sm break-words">{message.content}</p>
                     <p className="text-xs opacity-70 mt-1">
                       {message.timestamp.toLocaleTimeString([], {
                         hour: "2-digit",
@@ -174,19 +190,20 @@ export const ChatBot = () => {
               )}
             </div>
           </CardContent>
-          <CardFooter className="p-3 pt-0">
+          <CardFooter className="p-3 pt-0 flex-shrink-0">
             <form onSubmit={handleSubmit} className="flex w-full gap-2">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask me about fashion..."
                 disabled={isLoading}
-                className="flex-1"
+                className="flex-1 text-sm"
               />
               <Button 
                 type="submit" 
                 size="icon" 
                 disabled={isLoading || !input.trim()}
+                className="flex-shrink-0"
               >
                 <Send className="h-4 w-4" />
               </Button>
@@ -197,9 +214,14 @@ export const ChatBot = () => {
         <Button 
           onClick={toggleChat} 
           size="icon" 
-          className="h-12 w-12 rounded-full shadow-lg"
+          className={cn(
+            "rounded-full shadow-lg",
+            isMobile ? "h-14 w-14" : "h-12 w-12"
+          )}
         >
-          <MessageSquare className="h-6 w-6" />
+          <MessageSquare className={cn(
+            isMobile ? "h-7 w-7" : "h-6 w-6"
+          )} />
         </Button>
       )}
     </div>
