@@ -1,16 +1,17 @@
-
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { OutfitCard } from "@/components/OutfitCard";
 import { ScoreDisplay } from "@/components/ScoreDisplay";
-import { MessageSquare, Settings, Grid, Bookmark, Heart, Award } from "lucide-react";
+import { MessageSquare, Settings, Grid, Bookmark, Heart, Award, LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 const ProfilePage = () => {
   const { userId } = useParams();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("outfits");
   
   // Mock user data
@@ -79,6 +80,11 @@ const ProfilePage = () => {
   // Mock liked posts
   const likedPosts = userPosts.slice(1, 4);
 
+  const handleLogout = () => {
+    toast.success("Logged out successfully");
+    navigate("/login");
+  };
+
   return (
     <AppLayout title={userData.name}>
       <div className="max-w-4xl mx-auto">
@@ -122,6 +128,10 @@ const ProfilePage = () => {
               </Button>
               <Button variant="outline" size="icon">
                 <Settings className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" onClick={handleLogout}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
               </Button>
             </div>
           </div>
