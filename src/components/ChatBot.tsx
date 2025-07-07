@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import Groq from "groq-sdk";
 
 interface Message {
   role: "user" | "assistant";
@@ -13,13 +14,18 @@ interface Message {
   timestamp: Date;
 }
 
+const groq = new Groq({
+  apiKey: "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",
+  dangerouslyAllowBrowser: true
+});
+
 export const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hi there! I'm your TUFF assistant. How can I help you with your fashion and styling needs today?",
+      content: "Hi there! I'm your TUFF assistant powered by AI. How can I help you with your fashion and styling needs today?",
       timestamp: new Date(),
     },
   ]);
@@ -47,25 +53,63 @@ export const ChatBot = () => {
     setIsLoading(true);
 
     try {
-      // Simulate AI response with predefined responses
-      setTimeout(() => {
-        const response = getAIResponse(input.toLowerCase());
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content: response,
-            timestamp: new Date(),
-          },
-        ]);
-        setIsLoading(false);
-      }, 1000);
+      // Create a system prompt for fashion-focused responses
+      const systemPrompt = `You are TUFF, an AI fashion assistant. You help users with:
+      - Color analysis and skin tone matching
+      - Outfit coordination and styling advice
+      - Fashion trends and recommendations
+      - Brand suggestions and shopping advice
+      - Style improvement tips
+      - Fashion education and guidance
+      
+      Keep responses helpful, friendly, and focused on fashion and style. Be concise but informative.`;
+
+      // Prepare conversation history for context
+      const conversationHistory = messages.slice(-5).map(msg => ({
+        role: msg.role === "user" ? "user" : "assistant",
+        content: msg.content
+      }));
+
+      const completion = await groq.chat.completions.create({
+        messages: [
+          { role: "system", content: systemPrompt },
+          ...conversationHistory,
+          { role: "user", content: input }
+        ],
+        model: "llama3-8b-8192",
+        temperature: 0.7,
+        max_tokens: 500,
+      });
+
+      const aiResponse = completion.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response. Please try again.";
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: aiResponse,
+          timestamp: new Date(),
+        },
+      ]);
     } catch (error) {
+      console.error("Groq API error:", error);
       toast({
         title: "Error",
-        description: "Failed to get a response. Please try again.",
+        description: "Failed to get a response from the AI. Please try again.",
         variant: "destructive",
       });
+      
+      // Fallback to predefined responses
+      const fallbackResponse = getFallbackResponse(input.toLowerCase());
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: fallbackResponse,
+          timestamp: new Date(),
+        },
+      ]);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -135,7 +179,7 @@ export const ChatBot = () => {
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message..."
+                placeholder="Ask me about fashion..."
                 disabled={isLoading}
                 className="flex-1"
               />
@@ -162,9 +206,8 @@ export const ChatBot = () => {
   );
 };
 
-// Function to provide canned responses based on user input
-function getAIResponse(input: string): string {
-  // Simple matching logic for common questions
+// Fallback function for when Groq API fails
+function getFallbackResponse(input: string): string {
   if (input.includes("hello") || input.includes("hi") || input.includes("hey")) {
     return "Hello! How can I help with your fashion needs today?";
   } else if (input.includes("color analysis") || input.includes("skin tone")) {
@@ -181,6 +224,5 @@ function getAIResponse(input: string): string {
     return "You're welcome! Is there anything else I can help you with?";
   }
   
-  // Default response
   return "I'm here to help with fashion advice, color analysis, style suggestions, and more. How can I assist you today?";
 }
