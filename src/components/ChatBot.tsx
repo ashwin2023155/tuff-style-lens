@@ -64,17 +64,17 @@ export const ChatBot = () => {
       
       Keep responses helpful, friendly, and focused on fashion and style. Be concise but informative.`;
 
-      // Prepare conversation history for context
+      // Prepare conversation history for context with proper type casting
       const conversationHistory = messages.slice(-5).map(msg => ({
-        role: msg.role === "user" ? "user" : "assistant",
+        role: msg.role as "user" | "assistant",
         content: msg.content
       }));
 
       const completion = await groq.chat.completions.create({
         messages: [
-          { role: "system", content: systemPrompt },
+          { role: "system" as const, content: systemPrompt },
           ...conversationHistory,
-          { role: "user", content: input }
+          { role: "user" as const, content: input }
         ],
         model: "llama3-8b-8192",
         temperature: 0.7,
