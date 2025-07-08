@@ -113,6 +113,16 @@
       min-height: 44px;
       min-width: 44px;
     }
+
+    /* Ensure mobile sidebar doesn't interfere with content */
+    main {
+      padding-top: 60px; /* Account for mobile header */
+    }
+
+    /* Prevent chatbot from overlapping important content */
+    .chatbot-safe-area {
+      margin-bottom: 80px; /* Space for chatbot */
+    }
   }
 }
 
@@ -217,5 +227,18 @@
   
   .safe-area-inset-top {
     padding-top: max(1rem, env(safe-area-inset-top));
+  }
+}
+
+/* Mobile sidebar improvements */
+@media (max-width: 768px) {
+  /* Prevent body scroll when sidebar is open */
+  body.sidebar-open {
+    overflow: hidden;
+  }
+  
+  /* Improve sidebar visibility */
+  .sidebar-overlay {
+    backdrop-filter: blur(4px);
   }
 }

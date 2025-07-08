@@ -123,22 +123,22 @@ export const ChatBot = () => {
 
   return (
     <div className={cn(
-      "fixed z-50",
+      "fixed z-30",
       isMobile 
-        ? "inset-x-4 bottom-4 top-20" 
+        ? "bottom-4 right-4" 
         : "bottom-5 right-5"
     )}>
       {isOpen ? (
         <Card className={cn(
           "shadow-lg",
           isMobile 
-            ? "w-full h-full flex flex-col" 
+            ? "w-80 max-w-[calc(100vw-2rem)] h-96 max-h-[60vh] flex flex-col" 
             : "w-80 md:w-96"
         )}>
           <CardHeader className="bg-primary/10 p-3 flex flex-row items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2">
               <Bot className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">TUFF Assistant</h3>
+              <h3 className="font-semibold text-sm">TUFF Assistant</h3>
             </div>
             <Button variant="ghost" size="icon" onClick={toggleChat} className="h-8 w-8">
               <X className="h-4 w-4" />
@@ -215,12 +215,12 @@ export const ChatBot = () => {
           onClick={toggleChat} 
           size="icon" 
           className={cn(
-            "rounded-full shadow-lg",
-            isMobile ? "h-14 w-14" : "h-12 w-12"
+            "rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground",
+            isMobile ? "h-12 w-12" : "h-12 w-12"
           )}
         >
           <MessageSquare className={cn(
-            isMobile ? "h-7 w-7" : "h-6 w-6"
+            isMobile ? "h-6 w-6" : "h-6 w-6"
           )} />
         </Button>
       )}

@@ -14,7 +14,7 @@ import {
   TrendingUp,
   Award
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -53,24 +53,62 @@ export const AppSidebar = () => {
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
 
+  // Close sidebar on route change for mobile
+  useEffect(() => {
+    if (isMobile) {
+      closeSidebar();
+    }
+  }, [isMobile]);
+
+  // Close sidebar when clicking outside on mobile
+  useEffect(() => {
+    if (!isMobile || !isOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const sidebar = document.getElementById('mobile-sidebar');
+      const trigger = document.getElementById('sidebar-trigger');
+      
+      if (sidebar && !sidebar.contains(event.target as Node) && 
+          trigger && !trigger.contains(event.target as Node)) {
+        closeSidebar();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, isMobile]);
+
   return (
     <>
       {isMobile && (
         <Button 
+          id="sidebar-trigger"
           variant="ghost" 
           size="icon" 
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-50"
+          className="fixed top-4 left-4 z-50 bg-background/80 backdrop-blur-sm border border-border shadow-sm"
         >
           <Menu className="h-5 w-5" />
         </Button>
       )}
 
-      <aside className={cn(
-        "fixed inset-y-0 left-0 z-40 w-64 bg-sidebar border-r border-sidebar-border flex flex-col",
-        isMobile && "transform transition-transform duration-300 ease-in-out",
-        isMobile && (isOpen ? "translate-x-0" : "-translate-x-full")
-      )}>
+      {/* Mobile overlay */}
+      {isMobile && isOpen && (
+        <div 
+          className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm"
+          onClick={closeSidebar}
+        />
+      )}
+
+      <aside 
+        id="mobile-sidebar"
+        className={cn(
+          "fixed inset-y-0 left-0 z-40 w-64 bg-sidebar border-r border-sidebar-border flex flex-col",
+          isMobile && "transform transition-transform duration-300 ease-in-out",
+          isMobile && (isOpen ? "translate-x-0" : "-translate-x-full"),
+          !isMobile && "translate-x-0"
+        )}
+      >
         <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
           <h1 className="text-xl font-bold logo-text">TUFF</h1>
           {isMobile && (
@@ -95,7 +133,7 @@ export const AppSidebar = () => {
         </nav>
 
         <div className="p-4 border-t border-sidebar-border flex items-center justify-between">
-          <NavLink to="/profile/user1" className="flex items-center gap-2">
+          <NavLink to="/profile/user1" className="flex items-center gap-2" onClick={closeSidebar}>
             <Button variant="ghost" size="icon" className="rounded-full bg-primary/10">
               <User className="h-4 w-4 text-primary" />
             </Button>
