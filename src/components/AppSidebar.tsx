@@ -53,12 +53,25 @@ export const AppSidebar = () => {
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
 
-  // Close sidebar on route change for mobile
+  // Close sidebar when route changes on mobile
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile && isOpen) {
       closeSidebar();
     }
-  }, [isMobile]);
+  }, [location.pathname, isMobile]);
+
+  // Handle body scroll lock when sidebar is open on mobile
+  useEffect(() => {
+    if (isMobile && isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobile, isOpen]);
 
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
@@ -74,8 +87,19 @@ export const AppSidebar = () => {
       }
     };
 
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeSidebar();
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscapeKey);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
   }, [isOpen, isMobile]);
 
   return (
@@ -86,7 +110,8 @@ export const AppSidebar = () => {
           variant="ghost" 
           size="icon" 
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-50 bg-background/80 backdrop-blur-sm border border-border shadow-sm"
+          className="fixed top-4 left-4 z-50 bg-background/90 backdrop-blur-sm border border-border shadow-lg hover:bg-background/95"
+          aria-label="Toggle sidebar"
         >
           <Menu className="h-5 w-5" />
         </Button>
@@ -95,15 +120,16 @@ export const AppSidebar = () => {
       {/* Mobile overlay */}
       {isMobile && isOpen && (
         <div 
-          className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
           onClick={closeSidebar}
+          aria-hidden="true"
         />
       )}
 
       <aside 
         id="mobile-sidebar"
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-64 bg-sidebar border-r border-sidebar-border flex flex-col",
+          "fixed inset-y-0 left-0 z-50 w-72 bg-sidebar border-r border-sidebar-border flex flex-col shadow-lg",
           isMobile && "transform transition-transform duration-300 ease-in-out",
           isMobile && (isOpen ? "translate-x-0" : "-translate-x-full"),
           !isMobile && "translate-x-0"
@@ -112,7 +138,12 @@ export const AppSidebar = () => {
         <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
           <h1 className="text-xl font-bold logo-text">TUFF</h1>
           {isMobile && (
-            <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={toggleSidebar}
+              aria-label="Close sidebar"
+            >
               <X className="h-5 w-5" />
             </Button>
           )}

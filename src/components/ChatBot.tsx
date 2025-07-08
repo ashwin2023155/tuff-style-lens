@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Send, X, Bot, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -125,14 +124,14 @@ export const ChatBot = () => {
     <div className={cn(
       "fixed z-30",
       isMobile 
-        ? "bottom-4 right-4" 
+        ? "bottom-20 right-4" // Position above potential add button on mobile
         : "bottom-5 right-5"
     )}>
       {isOpen ? (
         <Card className={cn(
-          "shadow-lg",
+          "shadow-xl border-2",
           isMobile 
-            ? "w-80 max-w-[calc(100vw-2rem)] h-96 max-h-[60vh] flex flex-col" 
+            ? "w-80 max-w-[calc(100vw-2rem)] h-96 max-h-[50vh] flex flex-col" 
             : "w-80 md:w-96"
         )}>
           <CardHeader className="bg-primary/10 p-3 flex flex-row items-center justify-between flex-shrink-0">
@@ -215,12 +214,13 @@ export const ChatBot = () => {
           onClick={toggleChat} 
           size="icon" 
           className={cn(
-            "rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground",
-            isMobile ? "h-12 w-12" : "h-12 w-12"
+            "rounded-full shadow-xl bg-primary hover:bg-primary/90 text-primary-foreground border-2 border-background",
+            isMobile ? "h-14 w-14" : "h-12 w-12"
           )}
+          aria-label="Open TUFF Assistant"
         >
           <MessageSquare className={cn(
-            isMobile ? "h-6 w-6" : "h-6 w-6"
+            isMobile ? "h-7 w-7" : "h-6 w-6"
           )} />
         </Button>
       )}

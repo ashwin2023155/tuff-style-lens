@@ -121,11 +121,17 @@
 
     /* Prevent chatbot from overlapping important content */
     .chatbot-safe-area {
-      margin-bottom: 80px; /* Space for chatbot */
+      margin-bottom: 100px; /* Increased space for chatbot */
+    }
+
+    /* Ensure bottom navigation area is clear */
+    .mobile-bottom-spacing {
+      padding-bottom: 80px;
     }
   }
 }
 
+/* ... keep existing code (scrollbar styles) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -147,6 +153,7 @@
   }
 }
 
+/* ... keep existing code (fade animations and utility classes) */
 .fade-enter {
   opacity: 0;
 }
@@ -232,13 +239,18 @@
 
 /* Mobile sidebar improvements */
 @media (max-width: 768px) {
-  /* Prevent body scroll when sidebar is open */
-  body.sidebar-open {
-    overflow: hidden;
-  }
-  
-  /* Improve sidebar visibility */
+  /* Ensure proper z-index stacking */
   .sidebar-overlay {
     backdrop-filter: blur(4px);
+  }
+
+  /* Prevent content shift when sidebar opens */
+  .sidebar-open {
+    overflow: hidden;
+  }
+
+  /* Ensure chatbot doesn't overlap with navigation */
+  .mobile-nav-spacing {
+    margin-bottom: 80px;
   }
 }
