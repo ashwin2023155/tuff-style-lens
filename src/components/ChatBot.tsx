@@ -15,7 +15,7 @@ interface Message {
 }
 
 const groq = new Groq({
-  apiKey: "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",
+  apiKey: " put_api_key ",
   dangerouslyAllowBrowser: true
 });
 
