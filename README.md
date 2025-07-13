@@ -1,73 +1,128 @@
-# Welcome to your Lovable project
+# Welcome to the TUFF.AI page
 
-## Project info
+This is Ashwin Sajin here. Let's build something crazy this summer
 
-**URL**: https://lovable.dev/projects/520c08a3-83be-4649-b2f0-2c370a8de29d
+Currently, we are working on building an idea in the space of FASHION.
 
-## How can I edit this code?
+So this is the ideation kinda page where we have a brief about what u can understand about what we are building on.
 
-There are several ways of editing your application.
+### 1. AI-Based Color Analysis
 
-**Use Lovable**
+**Purpose**: Help users discover flattering colors based on facial features.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/520c08a3-83be-4649-b2f0-2c370a8de29d) and start prompting.
+**Details**:
 
-Changes made via Lovable will be committed automatically to this repo.
+- Upload a selfie.
+- AI detects skin tone, undertone, brightness, and contrast.
+- Determines the user’s seasonal color type (Spring, Summer, Autumn, Winter).
+- Suggests a personalized color palette for clothes and accessories.
 
-**Use your preferred IDE**
+### 2. Personalized Outfit Recommendations
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+**Purpose**: Provide tailored fashion suggestions.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**Details**:
 
-Follow these steps:
+- Analyzes body type (slim, tall, short, plus-size, wheelchair users, etc.).
+- Suggests fits (baggy, formal, oversized, smart-casual).
+- Considers event type (party, interview, travel, etc.).
+- Combines top + bottom, + accessories for complete look ideas.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### 3. AI-Based Style Rating and Suggestions
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+**Purpose**: Evaluate and improve fashion sense.
 
-# Step 3: Install the necessary dependencies.
-npm i
+**Details**:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+- Users upload a photo of their outfit.
+- AI gives a style score based on coordination, fit, contrast, etc.
+- Suggests ways to improve the outfit with examples and alternatives.
 
-**Edit a file directly in GitHub**
+### 4. Product & Brand Integration
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**Purpose**: Make suggested outfits buyable.
 
-**Use GitHub Codespaces**
+**Details**:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- Links outfit suggestions to Amazon, Myntra, or brand sites.
+- Future plan to build a TUFF-native marketplace.
+- Focus on collaborating with brands instead of competing.
 
-## What technologies are used for this project?
+### 5. Virtual Try-On (VTO)
 
-This project is built with:
+**Purpose**: Try on clothes virtually before purchasing.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+**Details**:
 
-## How can I deploy this project?
+- Upload a full-body image or use live camera.
+- AI overlays suggested outfits using pose estimation.
+- Users can save looks, compare outfits, and share visuals.
 
-Simply open [Lovable](https://lovable.dev/projects/520c08a3-83be-4649-b2f0-2c370a8de29d) and click on Share -> Publish.
+### 6. Multi-Page UI Design
 
-## Can I connect a custom domain to my Lovable project?
+**Pages**:
 
-Yes it is!
+- **Login/Signup**
+- **Upload Page** (for selfies or outfits)
+- **Results Page** (color + outfit suggestions)
+- **Style Suggestions Page**
+- **Product Suggestions Page**
+- **Lookbook Page** (save and organize favorite outfits)
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### 7. Fashion Chatbot
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+**Purpose**: Provide 24/7 fashion advice.
+
+**Details**:
+
+- Ask the chatbot about style pairings, what to wear, or care tips.
+- Explain the reasons behind the recommendations.
+- Suggests outfits or colors based on user prompts.
+
+### 8. Interactive Fashion Education & Style Discovery
+
+**Purpose**: Teach fashion preferences through interaction.
+
+**Details**:
+
+- Tinder-style swiping on clothes, accessories, and outfits.
+- AI builds style profile based on swipe history.
+- Offers mini quizzes, explanations, and guides to improve fashion sense.
+
+### 9. Current Trends Section
+
+**Purpose**: Help users stay trendy.
+
+**Details**:
+
+- Shows what’s trending based on aggregated TUFF user data.
+- Filters trends by location, event type, body type.
+- Breaks down top trending colors, cuts, and styles.
+
+### 10. TUFF Social Platform (Future Expansion)
+
+**Purpose**: Build a fashion-first community.
+
+**Details**:
+
+- Users post outfits, looks, and try-on photos.
+- Like, comment, and share fashion ideas.
+- Upload short videos or reels.
+
+### 11. Style Quotient (SQ) – Fashion Intelligence Score
+
+**Purpose**: Quantify and track personal style quality.
+
+**Details**:
+
+- Score out of 100 based on:
+    - **Color Match Score** (from AI analysis)
+    - **Trend Relevance Score** (based on trends section)
+    - **Outfit Harmony Score** (from style rating)
+- Score categories:
+    - 90: Fashion Trailblazer
+    - 70–89: Style Star
+    - 50–69: Getting There
+    - <50: Style Rookie
+- Provides breakdown + improvement tips.
+- Displayed in profile and can be shared.
